@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Craft Headed · Printable QR Poster</title>
+<link href="https://fonts.googleapis.com/css2?family=Yellowtail&family=Caveat:wght@500;600&family=Karla:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+  :root{--bg:#F6F1E7; --ink:#211C15; --gold:#A8894F; --line:#E2D8C3; --muted:#7C7160}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:#EDE4D2;font-family:'Karla',sans-serif;color:var(--ink);
+    display:flex;flex-direction:column;align-items:center;padding:36px 16px;min-height:100vh}
+
+  /* controls (hidden when printing) */
+  .controls{max-width:440px;width:100%;margin-bottom:30px;text-align:center}
+  .controls h1{font-family:'Yellowtail',cursive;font-size:32px;font-weight:400;margin-bottom:14px}
+  .controls input{width:100%;padding:13px 14px;border:1.5px solid var(--line);border-radius:5px;
+    background:#fff;font-family:'Karla',sans-serif;font-size:15px;margin-bottom:12px}
+  .controls button{font-family:'Karla',sans-serif;font-size:12px;letter-spacing:.22em;
+    text-transform:uppercase;font-weight:600;padding:14px 26px;border:1.5px solid var(--ink);
+    border-radius:3px;background:var(--ink);color:var(--bg);cursor:pointer;margin:0 5px}
+  .controls button.alt{background:transparent;color:var(--ink)}
+  .controls p{font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6}
+
+  /* full-page poster, Letter proportions */
+  .poster{width:8in;height:10.4in;background:var(--bg);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;padding:.6in .5in;box-shadow:0 10px 30px rgba(0,0,0,.12);
+    background-image:radial-gradient(ellipse 90% 40% at 50% -5%, #FDFAF3 0%, transparent 60%)}
+  .frame{border:1.5px solid var(--gold);width:100%;height:100%;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;padding:.5in .35in}
+  .sprigs{display:flex;align-items:center;justify-content:center;gap:16px;color:var(--gold)}
+  .sprigs svg{width:1.3in;height:.6in;overflow:visible}
+  .sprigs .heart{font-size:16pt;color:var(--gold)}
+  .brand{font-family:'Yellowtail',cursive;color:var(--ink);font-size:58pt;
+    line-height:1.15;transform:rotate(-2deg);margin-top:.1in}
+  .divider{display:flex;align-items:center;justify-content:center;gap:14px;width:3.4in;margin:.18in auto .1in}
+  .divider .ln{flex:1;height:1.5px;background:var(--gold);opacity:.8}
+  .divider .hh{color:var(--gold);font-size:12pt}
+  .byline{font-family:'Caveat',cursive;color:var(--muted);font-size:22pt;font-weight:600}
+  .tag{font-family:'Caveat',cursive;color:var(--gold);font-size:16pt;font-weight:600;margin:.06in 0 .35in}
+  .qrbox{padding:14px;background:#fff;border:1.5px solid var(--line);border-radius:8px}
+  .qrbox img,.qrbox canvas{display:block}
+  .scan{font-size:13pt;letter-spacing:.3em;text-transform:uppercase;font-weight:600;
+    color:var(--ink);margin-top:.3in}
+  .ig{font-family:'Caveat',cursive;font-size:17pt;color:var(--muted);font-weight:600;margin-top:.1in}
+  @media print{
+    body{background:#fff;padding:0;display:block}
+    .controls{display:none}
+    .poster{box-shadow:none;margin:0 auto;width:100%;height:100vh}
+    @page{size:letter portrait;margin:.25in}
+  }
+</style>
+</head>
+<body>
+  <div class="controls">
+    <h1>Craft Headed QR Poster</h1>
+    <input type="text" id="url" placeholder="Paste your live site URL"
+           value="https://YOURNAME.github.io/craft-headed/">
+    <div>
+      <button class="alt" onclick="makeQR()">Update QR</button>
+      <button onclick="window.print()">Print</button>
+    </div>
+    <p>Prints one full-page poster on Letter paper.<br>
+       Paste your real site URL first, then Update QR, then Print.</p>
+  </div>
+
+  <div class="poster">
+    <div class="frame">
+      <div class="sprigs">
+        <svg viewBox="0 0 70 34"><g fill="currentColor" stroke="currentColor">
+          <path d="M2 30 Q 30 22 68 6" fill="none" stroke-width="2" stroke-linecap="round"/>
+          <path d="M16 26 q -6 -9 -14 -10 q 4 11 14 10z" stroke="none"/>
+          <path d="M30 21 q -2 -10 -10 -14 q 1 12 10 14z" stroke="none"/>
+          <path d="M45 15 q -1 -10 -8 -15 q 0 12 8 15z" stroke="none"/>
+          <path d="M58 10 q 1 -8 -4 -13 q -2 10 4 13z" stroke="none"/>
+          <circle cx="24" cy="12" r="1.4" stroke="none"/>
+          <circle cx="50" cy="4" r="1.2" stroke="none"/>
+        </g></svg>
+        <span class="heart">♥</span>
+        <svg viewBox="0 0 70 34" style="transform:scaleX(-1)"><g fill="currentColor" stroke="currentColor">
+          <path d="M2 30 Q 30 22 68 6" fill="none" stroke-width="2" stroke-linecap="round"/>
+          <path d="M16 26 q -6 -9 -14 -10 q 4 11 14 10z" stroke="none"/>
+          <path d="M30 21 q -2 -10 -10 -14 q 1 12 10 14z" stroke="none"/>
+          <path d="M45 15 q -1 -10 -8 -15 q 0 12 8 15z" stroke="none"/>
+          <path d="M58 10 q 1 -8 -4 -13 q -2 10 4 13z" stroke="none"/>
+          <circle cx="24" cy="12" r="1.4" stroke="none"/>
+          <circle cx="50" cy="4" r="1.2" stroke="none"/>
+        </g></svg>
+      </div>
+      <div class="brand">Craft Headed</div>
+      <div class="divider"><span class="ln"></span><span class="hh">♥</span><span class="ln"></span></div>
+      <div class="byline">by Shivani</div>
+      <div class="tag">Made with love, for the moments that matter</div>
+      <div class="qrbox" id="qr"></div>
+      <div class="scan">Scan to Begin</div>
+      <div class="ig">@craft.headed</div>
+    </div>
+  </div>
+
+<script>
+  function makeQR(){
+    const url = document.getElementById('url').value.trim();
+    const box = document.getElementById('qr');
+    box.innerHTML = '';
+    new QRCode(box, {
+      text:url, width:340, height:340,
+      colorDark:'#211C15', colorLight:'#ffffff',
+      correctLevel:QRCode.CorrectLevel.M
+    });
+  }
+  makeQR();
+</script>
+</body>
+</html>
