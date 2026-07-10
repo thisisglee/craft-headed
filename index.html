@@ -3,203 +3,279 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Craft Headed Studio — Bespoke Engraving</title>
-<meta name="description" content="Craft Headed Studio — bespoke hand engraving for bottles, perfumes and keepsakes. Custom gifts for weddings, anniversaries and special occasions.">
+<title>Craft Headed Studio · Handmade Engraving &amp; Décor</title>
+<meta name="description" content="Craft Headed Studio. Hand engraved bottles, perfumes and keepsakes for weddings, anniversaries and every occasion worth remembering. Brampton, Ontario.">
 <meta name="theme-color" content="#F6F1E7">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Craft Headed">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="favicon.png">
+<meta property="og:title" content="Craft Headed by Shivani">
+<meta property="og:description" content="Hand engraved bottles, perfumes and keepsakes. Made with love, for the moments that matter.">
+<meta property="og:image" content="og-image.png">
+<meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Yellowtail&family=Caveat:wght@500;600&family=Karla:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<script async src="https://js.stripe.com/v3/buy-button.js"></script>
 <style>
   :root{
-    --bg:#F6F1E7; --bg-2:#EFE7D6; --card:#FBF8F1;
+    --bg:#F6F1E7; --bg-2:#EFE7D6; --paper:#FBF8F1; --card:#FFFFFF;
     --ink:#211C15; --muted:#7C7160; --gold:#A8894F; --gold-soft:#C4A96F;
     --line:#DDD2BC; --err:#9A4A32;
-    --serif:'Cormorant Garamond', Georgia, serif;
-    --sans:'Jost', 'Helvetica Neue', sans-serif;
+    --script:'Yellowtail', cursive;
+    --hand:'Caveat', cursive;
+    --sans:'Karla', 'Segoe UI', sans-serif;
   }
   *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-  html{scroll-behavior:smooth}
+  html{-webkit-text-size-adjust:100%}
   body{
     background:var(--bg); color:var(--ink); font-family:var(--sans);
-    font-weight:300; line-height:1.6; min-height:100dvh; letter-spacing:.02em;
-    background-image:radial-gradient(ellipse 80% 50% at 50% -10%, #FDFAF3 0%, transparent 60%);
+    font-weight:400; line-height:1.6; min-height:100dvh; overflow-x:hidden;
+    background-image:radial-gradient(ellipse 85% 45% at 50% -8%, #FDFAF3 0%, transparent 60%);
   }
   .page{display:none; min-height:100dvh; flex-direction:column; align-items:center;
-    padding:clamp(24px,6vw,64px) clamp(20px,6vw,48px); animation:fade .7s ease both}
+    padding:30px 14px 26px; animation:fade .6s ease both; width:100%}
   .page.active{display:flex}
-  @keyframes fade{from{opacity:0; transform:translateY(14px)}to{opacity:1; transform:none}}
-  .inner{width:100%; max-width:560px; margin:auto; text-align:center}
+  @keyframes fade{from{opacity:0; transform:translateY(12px)}to{opacity:1; transform:none}}
+  .inner{width:100%; max-width:600px; margin:0 auto; text-align:center}
+  .center-v{margin:auto}
+
+  /* paper sheet the form steps sit on */
+  .sheet{background:var(--paper); border:1px solid var(--line); border-radius:10px;
+    padding:30px 18px 26px; box-shadow:0 12px 34px rgba(90,70,40,.10);
+    width:100%; text-align:center}
+  @media(min-width:520px){ .sheet{padding:44px 44px 38px} .page{padding:48px 24px 36px} }
 
   /* ---------- typography ---------- */
-  .eyebrow{font-size:11px; letter-spacing:.42em; text-transform:uppercase; color:var(--gold); font-weight:400}
-  h1.brand{font-family:var(--serif); font-weight:500; font-size:clamp(40px,9vw,64px);
-    letter-spacing:.14em; text-transform:uppercase; line-height:1.08; margin:18px 0 4px}
-  .studio{font-size:13px; letter-spacing:.6em; text-transform:uppercase; color:var(--muted);
-    font-weight:300; margin-left:.6em}
-  h2{font-family:var(--serif); font-weight:500; font-size:clamp(28px,6vw,38px); letter-spacing:.04em; margin:14px 0 8px}
-  .lead{color:var(--muted); font-size:15px; max-width:42ch; margin:0 auto}
-  .rule{width:56px; height:1px; background:var(--gold); margin:26px auto; opacity:.7; position:relative}
-  .rule::after{content:'✦'; position:absolute; top:-9px; left:50%; transform:translateX(-50%);
-    background:var(--bg); padding:0 10px; color:var(--gold); font-size:10px}
+  .script{font-family:var(--script); font-weight:400}
+  .hand{font-family:var(--hand); font-weight:500}
+  .eyebrow{font-size:11px; letter-spacing:.3em; text-transform:uppercase; font-weight:600; color:var(--gold)}
+  h2{font-family:var(--script); font-size:clamp(30px,7.5vw,42px); color:var(--ink);
+     margin:10px 0 8px; font-weight:400}
+  .lead{color:var(--muted); font-size:15px; max-width:44ch; margin:0 auto}
+  .handnote{font-family:var(--hand); font-size:21px; color:var(--gold); line-height:1.35}
+
+  /* ---------- logo ---------- */
+  .logo{color:var(--ink)}
+  .logo .sprigs{display:flex; align-items:center; justify-content:center; gap:14px; margin-bottom:2px; color:var(--gold)}
+  .logo .sprigs svg{width:70px; height:34px; overflow:visible}
+  .logo .heart{font-size:14px; color:var(--gold); transform:translateY(2px)}
+  .logo .word{font-family:var(--script); font-size:clamp(44px,11vw,86px); line-height:1.25;
+    color:var(--ink); padding:0 6px; transform:rotate(-2deg); white-space:nowrap}
+  .logo .divider{display:flex; align-items:center; justify-content:center; gap:12px; margin:10px auto 8px; max-width:270px}
+  .logo .divider .ln{flex:1; height:1px; background:var(--gold); opacity:.8}
+  .logo .divider .hh{color:var(--gold); font-size:12px}
+  .logo .byline{font-family:var(--hand); font-size:clamp(22px,5.5vw,30px); color:var(--muted); font-weight:600; margin-bottom:2px}
+  .logo .tagline{font-family:var(--hand); font-size:clamp(18px,4.4vw,23px); color:var(--gold); font-weight:600}
 
   /* ---------- buttons ---------- */
-  .btn{display:inline-block; font-family:var(--sans); font-size:12px; letter-spacing:.32em;
-    text-transform:uppercase; font-weight:400; color:var(--ink); background:transparent;
-    border:1px solid var(--ink); padding:18px 40px 17px; cursor:pointer; text-decoration:none;
-    transition:all .35s ease; position:relative; overflow:hidden}
-  .btn:hover,.btn:active{background:var(--ink); color:var(--bg)}
-  .btn.gold{border-color:var(--gold); color:var(--gold)}
-  .btn.gold:hover,.btn.gold:active{background:var(--gold); color:#fff}
-  .btn.solid{background:var(--ink); color:var(--bg)}
-  .btn.solid:hover{background:var(--gold); border-color:var(--gold)}
-  .btn:disabled{opacity:.4; cursor:not-allowed}
-  .btn-back{background:none; border:none; color:var(--muted); font-family:var(--sans); font-size:11px;
-    letter-spacing:.28em; text-transform:uppercase; cursor:pointer; padding:14px; margin-top:10px}
+  .btn{display:inline-block; font-family:var(--sans); font-size:12px; letter-spacing:.18em;
+    text-transform:uppercase; font-weight:600; color:var(--bg); background:var(--ink);
+    border:1.5px solid var(--ink); padding:16px 26px 15px; cursor:pointer; text-decoration:none;
+    border-radius:3px; transition:all .3s ease; max-width:100%; white-space:normal; line-height:1.5}
+  .btn:hover,.btn:active{background:var(--gold); border-color:var(--gold); color:#fff}
+  .btn.ghost{background:transparent; color:var(--ink)}
+  .btn.ghost:hover{background:var(--ink); color:var(--bg)}
+  .btn:disabled{opacity:.45; cursor:not-allowed}
+  .btn-back{background:none; border:none; color:var(--muted); font-family:var(--sans);
+    font-size:11.5px; letter-spacing:.2em; text-transform:uppercase; cursor:pointer;
+    padding:16px 14px 6px; font-weight:500}
   .btn-back:hover{color:var(--ink)}
+  @media(max-width:420px){ .btn{width:100%; letter-spacing:.14em; padding:15px 14px} }
 
   /* ---------- progress ---------- */
-  .progress{display:flex; gap:10px; justify-content:center; margin-bottom:34px}
-  .dot{width:5px; height:5px; border-radius:50%; background:var(--line); transition:all .4s}
-  .dot.on{background:var(--gold); transform:scale(1.5)}
+  .progress{display:flex; gap:9px; justify-content:center; margin-bottom:24px}
+  .dot{width:6px; height:6px; border-radius:50%; background:var(--line); transition:all .4s}
+  .dot.on{background:var(--gold); transform:scale(1.35)}
 
   /* ---------- landing ---------- */
-  .monogram{width:74px; height:74px; border:1px solid var(--gold); border-radius:50%;
-    display:flex; align-items:center; justify-content:center; margin:0 auto 26px;
-    font-family:var(--serif); font-size:26px; letter-spacing:.1em; color:var(--gold); font-weight:500}
-  .social{display:flex; gap:26px; justify-content:center; margin-top:34px}
-  .social a{color:var(--muted); text-decoration:none; font-size:12px; letter-spacing:.24em;
-    text-transform:uppercase; display:inline-flex; align-items:center; gap:9px; transition:color .3s}
+  .social{display:flex; gap:26px; justify-content:center; margin-top:30px}
+  .social a{color:var(--muted); text-decoration:none; font-size:12.5px; letter-spacing:.18em;
+    text-transform:uppercase; font-weight:500; display:inline-flex; align-items:center; gap:9px}
   .social a:hover{color:var(--gold)}
-  .social svg{width:17px; height:17px; stroke:currentColor; fill:none; stroke-width:1.4}
-  footer{margin-top:auto; padding-top:46px; font-size:11px; letter-spacing:.22em;
-    text-transform:uppercase; color:var(--muted); opacity:.8; text-align:center}
+  .social svg{width:17px; height:17px; stroke:currentColor; fill:none; stroke-width:1.6}
+  footer{margin-top:auto; padding-top:38px; font-size:10.5px; letter-spacing:.18em;
+    text-transform:uppercase; color:var(--muted); opacity:.85; text-align:center; font-weight:500}
 
   /* ---------- choice cards ---------- */
-  .choices{display:grid; gap:14px; margin:30px 0 8px}
-  .choice{background:var(--card); border:1px solid var(--line); padding:26px 22px; cursor:pointer;
-    text-align:center; transition:all .3s ease; position:relative}
-  .choice:hover{border-color:var(--gold-soft)}
-  .choice.selected{border-color:var(--gold); box-shadow:0 0 0 1px var(--gold)}
-  .choice .c-icon{font-family:var(--serif); font-size:30px; color:var(--gold); display:block; margin-bottom:8px; font-style:italic}
-  .choice .c-name{font-family:var(--serif); font-size:23px; letter-spacing:.08em}
-  .choice .c-sub{font-size:12px; color:var(--muted); letter-spacing:.06em; margin-top:3px}
-  .note{font-size:12.5px; color:var(--muted); margin-top:22px; line-height:1.7}
-  .note .star{color:var(--gold)}
+  .choices{display:grid; gap:13px; margin:26px 0 6px}
+  .choice{background:var(--card); border:1.5px solid var(--line); border-radius:8px; padding:22px 16px;
+    cursor:pointer; text-align:center; transition:all .25s ease}
+  .choice:hover{border-color:var(--gold-soft); transform:translateY(-2px)}
+  .choice.selected{border-color:var(--gold); box-shadow:0 0 0 1.5px var(--gold)}
+  .choice .c-icon{font-family:Georgia,serif; font-style:italic; font-size:28px; color:var(--gold); display:block; line-height:1.1}
+  .choice .c-name{font-family:var(--script); font-size:23px; color:var(--ink); display:block; margin-top:7px}
+  .choice .c-sub{font-size:12.5px; color:var(--muted); display:block; margin-top:3px}
+  .note{font-size:13px; color:var(--muted); margin-top:20px; line-height:1.7; text-align:left;
+    background:var(--bg-2); border-radius:6px; padding:14px 16px}
+  .note .star{color:var(--gold); font-weight:600}
 
   /* ---------- form ---------- */
   form{text-align:left}
-  .field{margin-bottom:26px}
-  label{display:block; font-size:11px; letter-spacing:.3em; text-transform:uppercase;
-    color:var(--muted); margin-bottom:9px; font-weight:400}
+  .field{margin-bottom:24px}
+  label{display:block; font-size:11.5px; letter-spacing:.2em; text-transform:uppercase;
+    color:var(--ink); margin-bottom:8px; font-weight:600}
   label .req{color:var(--gold)}
-  input[type=text],input[type=email],input[type=tel],input[type=date],textarea,select{
-    width:100%; background:var(--card); border:1px solid var(--line); padding:15px 16px;
-    font-family:var(--sans); font-weight:300; font-size:16px; color:var(--ink);
-    letter-spacing:.03em; transition:border-color .3s; border-radius:0; -webkit-appearance:none; appearance:none}
-  input:focus,textarea:focus,select:focus{outline:none; border-color:var(--gold)}
+  label .opt{color:var(--muted); text-transform:none; letter-spacing:.03em; font-weight:400}
+  input[type=text],input[type=email],input[type=tel],input[type=date],input[type=password],textarea{
+    width:100%; background:var(--card); border:1.5px solid var(--line); border-radius:5px;
+    padding:14px 15px; min-height:52px; font-family:var(--sans); font-weight:400; font-size:16px;
+    color:var(--ink); transition:border-color .3s; -webkit-appearance:none; appearance:none}
+  input[type=date]{line-height:1.3; display:block}
+  input:focus,textarea:focus{outline:none; border-color:var(--gold)}
   textarea{resize:vertical; min-height:110px}
-  .hint{font-size:12px; color:var(--muted); margin-top:7px; display:flex; justify-content:space-between}
-  .hint .count.over{color:var(--err); font-weight:400}
-  .error-msg{color:var(--err); font-size:12.5px; margin-top:7px; display:none; letter-spacing:.04em}
+  .hint{font-size:12.5px; color:var(--muted); margin-top:7px; display:flex;
+    justify-content:space-between; gap:10px; flex-wrap:wrap}
+  .hint .count.over{color:var(--err); font-weight:600}
+  .error-msg{color:var(--err); font-size:13px; margin-top:7px; display:none}
   .field.invalid input,.field.invalid textarea{border-color:var(--err)}
   .field.invalid .error-msg{display:block}
 
   /* delivery toggle */
-  .seg{display:grid; grid-template-columns:1fr 1fr; border:1px solid var(--line); background:var(--card)}
-  .seg button{background:none; border:none; padding:15px 8px; font-family:var(--sans); font-size:12px;
-    letter-spacing:.22em; text-transform:uppercase; color:var(--muted); cursor:pointer; transition:all .3s}
+  .seg{display:grid; grid-template-columns:1fr 1fr; border:1.5px solid var(--line); border-radius:5px; overflow:hidden; background:var(--card)}
+  .seg button{background:none; border:none; padding:15px 6px; font-family:var(--sans); font-size:12px;
+    letter-spacing:.14em; text-transform:uppercase; font-weight:600; color:var(--muted);
+    cursor:pointer; transition:all .3s}
   .seg button.on{background:var(--ink); color:var(--bg)}
 
   /* upload */
-  .upload{border:1px dashed var(--gold-soft); background:var(--card); padding:30px 20px;
-    text-align:center; cursor:pointer; transition:background .3s}
-  .upload:hover{background:var(--bg-2)}
-  .upload .u-icon{font-size:22px; color:var(--gold); font-family:var(--serif); font-style:italic}
-  .upload p{font-size:13px; color:var(--muted); margin-top:6px}
+  .upload{border:1.5px dashed var(--gold-soft); background:var(--card); border-radius:6px;
+    padding:24px 14px; text-align:center; cursor:pointer; transition:background .3s}
+  .upload:hover{background:var(--bg)}
+  .upload .u-icon{font-family:Georgia,serif; font-style:italic; font-size:22px; color:var(--gold)}
+  .upload p{font-size:13px; color:var(--muted); margin-top:5px}
   .filelist{margin-top:12px; display:flex; flex-wrap:wrap; gap:8px}
-  .filechip{background:var(--bg-2); border:1px solid var(--line); font-size:12px; padding:7px 12px;
-    display:inline-flex; align-items:center; gap:8px; letter-spacing:.03em}
-  .filechip b{font-weight:400; max-width:150px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
-  .filechip button{background:none; border:none; color:var(--err); cursor:pointer; font-size:14px; line-height:1}
+  .filechip{background:var(--bg-2); border:1px solid var(--line); border-radius:4px; font-size:12.5px;
+    padding:7px 12px; display:inline-flex; align-items:center; gap:8px; max-width:100%}
+  .filechip b{font-weight:500; max-width:160px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+  .filechip button{background:none; border:none; color:var(--err); cursor:pointer; font-size:15px; line-height:1}
 
   /* ---------- terms ---------- */
-  .terms{background:var(--card); border:1px solid var(--line); padding:30px 28px; text-align:left; margin:26px 0}
-  .terms h3{font-family:var(--serif); font-size:20px; font-weight:500; letter-spacing:.08em; margin-bottom:16px; text-align:center}
+  .terms{background:var(--card); border:1.5px solid var(--line); border-radius:8px;
+    padding:22px 18px; text-align:left; margin:22px 0}
+  .terms h3{font-family:var(--script); font-size:22px; font-weight:400; margin-bottom:12px; text-align:center}
   .terms ol{list-style:none; counter-reset:t}
-  .terms li{counter-increment:t; font-size:13.5px; color:var(--ink); padding:11px 0 11px 38px;
-    position:relative; border-bottom:1px solid var(--bg-2); line-height:1.65}
+  .terms li{counter-increment:t; font-size:13.5px; padding:10px 0 10px 32px;
+    position:relative; border-bottom:1px solid var(--bg-2); line-height:1.6}
   .terms li:last-child{border-bottom:none}
-  .terms li::before{content:counter(t, upper-roman); position:absolute; left:0; top:12px;
-    font-family:var(--serif); font-style:italic; color:var(--gold); font-size:15px}
-  .agree{display:flex; gap:14px; align-items:flex-start; text-align:left; margin:24px 0; cursor:pointer}
-  .agree input{width:19px; height:19px; margin-top:2px; accent-color:var(--gold); flex-shrink:0}
-  .agree span{font-size:13.5px; color:var(--ink); line-height:1.6}
+  .terms li::before{content:counter(t); position:absolute; left:4px; top:9px;
+    font-family:var(--hand); color:var(--gold); font-size:19px; font-weight:600}
+  .agree{display:flex; gap:13px; align-items:flex-start; text-align:left; margin:22px 0 6px; cursor:pointer}
+  .agree input{width:20px; height:20px; margin-top:2px; accent-color:var(--gold); flex-shrink:0}
+  .agree span{font-size:13.5px; line-height:1.6}
+  #agree-err{margin:8px 0 14px}
 
   /* ---------- deposit ---------- */
-  .price{font-family:var(--serif); font-size:64px; font-weight:400; color:var(--ink); margin:8px 0 0}
-  .price sup{font-size:24px; color:var(--gold); top:-1.2em}
-  .price-note{font-size:12px; letter-spacing:.26em; text-transform:uppercase; color:var(--gold); margin-bottom:6px}
-  .summary{background:var(--card); border:1px solid var(--line); text-align:left; padding:22px 24px; margin:28px 0; font-size:13.5px}
-  .summary .row{display:flex; justify-content:space-between; gap:16px; padding:7px 0; border-bottom:1px solid var(--bg-2)}
+  .price{font-family:var(--script); font-size:54px; color:var(--ink); margin:2px 0 0}
+  .price-note{font-size:11.5px; letter-spacing:.22em; text-transform:uppercase; color:var(--gold); font-weight:600; margin-top:16px}
+  .summary{background:var(--card); border:1.5px solid var(--line); border-radius:8px; text-align:left;
+    padding:16px 18px; margin:24px 0; font-size:13.5px}
+  .summary .row{display:flex; justify-content:space-between; gap:12px; padding:7px 0; border-bottom:1px solid var(--bg-2)}
   .summary .row:last-child{border:none}
-  .summary .k{color:var(--muted); letter-spacing:.14em; text-transform:uppercase; font-size:11px; padding-top:3px; flex-shrink:0}
-  .summary .v{text-align:right; max-width:60%}
-  .alt-pay{margin-top:34px; border-top:1px solid var(--line); padding-top:26px}
-  .alt-pay>button{background:none; border:none; font-family:var(--sans); font-size:11.5px;
-    letter-spacing:.24em; text-transform:uppercase; color:var(--muted); cursor:pointer; padding:8px}
-  .alt-pay>button:hover{color:var(--gold)}
-  .staff-box{display:none; margin-top:18px}
-  .staff-box.open{display:block}
-  .staff-box .pinrow{display:flex; gap:10px; max-width:320px; margin:12px auto 0}
-  .staff-box input{text-align:center; letter-spacing:.4em; font-size:18px}
-  .staff-box .btn{padding:14px 22px 13px; letter-spacing:.2em; white-space:nowrap}
+  .summary .k{color:var(--muted); letter-spacing:.1em; text-transform:uppercase; font-size:10.5px;
+    font-weight:600; padding-top:3px; flex-shrink:0}
+  .summary .v{text-align:right; max-width:62%; overflow-wrap:anywhere}
+
+  .paytabs{display:grid; gap:11px; margin-top:8px}
+  .paytab{background:var(--card); border:1.5px solid var(--line); border-radius:8px; cursor:pointer;
+    padding:15px 16px; text-align:left; transition:all .25s}
+  .paytab:hover{border-color:var(--gold-soft)}
+  .paytab.open{border-color:var(--gold); box-shadow:0 0 0 1.5px var(--gold)}
+  .paytab .pt-head{display:flex; align-items:center; gap:12px}
+  .paytab .pt-ic{font-family:Georgia,serif; font-style:italic; font-size:22px; color:var(--gold); width:26px; text-align:center; flex-shrink:0}
+  .paytab .pt-name{font-weight:600; font-size:14.5px; display:flex; align-items:center; gap:8px; flex-wrap:wrap}
+  .paytab .pt-sub{font-size:12.5px; color:var(--muted); margin-top:1px}
+  .paytab .pt-body{display:none; margin-top:14px; padding-top:14px; border-top:1px solid var(--bg-2); text-align:center}
+  .paytab.open .pt-body{display:block}
+  .stripe-badge{display:inline-flex; align-items:center; gap:4px; font-size:10.5px; color:var(--muted);
+    letter-spacing:.04em; background:var(--bg-2); border-radius:3px; padding:3px 8px; font-weight:500}
+  .stripe-badge b{color:#635BFF; font-weight:700; font-size:12.5px; letter-spacing:-.02em}
+  .etr-email{font-size:16px; font-weight:600; color:var(--ink); background:var(--bg-2);
+    border-radius:5px; padding:12px 14px; margin:10px 0; overflow-wrap:anywhere}
+  .pt-steps{font-size:13px; color:var(--muted); text-align:left; line-height:1.8; margin:8px 0 4px}
+  .pinrow{display:flex; gap:10px; max-width:340px; margin:12px auto 0; flex-wrap:wrap; justify-content:center}
+  .pinrow input{flex:1 1 150px; text-align:center; letter-spacing:.3em; font-size:17px}
+  .pinrow .btn{padding:14px 18px 13px; letter-spacing:.14em; flex-shrink:0}
+  .codewrap{margin-top:14px; padding-top:12px; border-top:1px dashed var(--line)}
+  .codewrap .cw-label{font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); font-weight:600}
+  stripe-buy-button{display:block; margin:6px auto 0}
 
   /* ---------- thank you ---------- */
-  .check{width:74px; height:74px; border:1px solid var(--gold); border-radius:50%;
-    display:flex; align-items:center; justify-content:center; margin:0 auto 26px;
-    color:var(--gold); font-size:28px; font-family:var(--serif)}
+  .thanks-heart{font-family:var(--hand); font-size:42px; color:var(--gold); line-height:1}
+  .personal{background:var(--paper); border:1px solid var(--line); border-radius:10px;
+    padding:24px 22px; margin:26px auto 0; box-shadow:0 12px 30px rgba(90,70,40,.10); max-width:480px}
+  .personal .handnote{font-size:22px; color:var(--muted)}
+  .personal .sig{font-family:var(--script); font-size:26px; color:var(--gold); margin-top:12px; transform:rotate(-2deg)}
 
-  .spinner{display:none; width:26px; height:26px; border:2px solid var(--line);
-    border-top-color:var(--gold); border-radius:50%; margin:16px auto 0; animation:spin .8s linear infinite}
+  .spinner{display:none; width:26px; height:26px; border:2.5px solid var(--line);
+    border-top-color:var(--gold); border-radius:50%; margin:14px auto 0; animation:spin .8s linear infinite}
   @keyframes spin{to{transform:rotate(360deg)}}
-  .sending .spinner{display:block}
-  .toast{position:fixed; left:50%; bottom:28px; transform:translateX(-50%) translateY(80px);
-    background:var(--ink); color:var(--bg); font-size:13px; letter-spacing:.06em; padding:13px 26px;
-    transition:transform .4s ease; z-index:50; max-width:90vw; text-align:center}
+  .toast{position:fixed; left:50%; bottom:24px; transform:translateX(-50%) translateY(90px);
+    background:var(--ink); color:var(--bg); font-size:13.5px; padding:13px 22px; border-radius:6px;
+    transition:transform .4s ease; z-index:50; max-width:92vw; text-align:center}
   .toast.show{transform:translateX(-50%) translateY(0)}
-  @media(min-width:560px){.choices{grid-template-columns:repeat(3,1fr)} .choice{padding:32px 16px}}
+  @media(min-width:560px){.choices{grid-template-columns:repeat(3,1fr)} .choice{padding:26px 12px}}
 </style>
 </head>
 <body>
 
-<!-- ================= CONFIG — EDIT THESE 4 LINES ================= -->
+<!-- ================= CONFIG ================= -->
 <script>
 const CONFIG = {
-  SCRIPT_URL:  "PASTE_YOUR_GOOGLE_APPS_SCRIPT_URL_HERE",   // from SETUP-GUIDE step 2
-  STRIPE_LINK: "PASTE_YOUR_STRIPE_PAYMENT_LINK_HERE",      // from SETUP-GUIDE step 3
-  INSTAGRAM:   "https://www.instagram.com/craft.headed",
-  // Staff code for Interac / cash bypass. Default code: craft25
-  // To change it: https://emn178.github.io/online-tools/sha256.html → paste new code → copy hash here
+  SCRIPT_URL:      "https://script.google.com/macros/s/AKfycbyBh0Ij_BZ_q6FprVQqx1dGt-2NjrfDG14T2Kmi4gueFDLKdLERHdsFGrsiXh007tQ1kA/exec",
+  // LIVE payment: paste your live Payment Link URL here (https://buy.stripe.com/...).
+  // When set, it is used instead of the buy button below.
+  PAYMENT_LINK:    "PASTE_YOUR_LIVE_PAYMENT_LINK_HERE",
+  // Fallback: test-mode buy button (used only while PAYMENT_LINK is not set)
+  BUY_BUTTON_ID:   "buy_btn_1TrnLOCdHEHDeSuLFal2IEZ3",
+  STRIPE_PK:       "pk_test_51TrnEmCdHEHDeSuLBUPoCUmwz8aFKEnTTHs11RYxqIlIdk8OWX93AwboJkvbSFnFJSp4PFdoONnVEBhUDzJe8zky00niyLl06f",
+  ETRANSFER_EMAIL: "craftheadedbyshivani@gmail.com",
+  INSTAGRAM:       "https://www.instagram.com/craft.headed",
+  MIN_DAYS_NOTICE: 3,
+  // Studio code used for Interac + in-person confirmation. Default code: craft25
+  // To change: https://emn178.github.io/online-tools/sha256.html then paste the new hash below
   STAFF_CODE_HASH: "cb583589d42ffe99b37cf89be8858ef45dc887b1e29f945935210b560dadfa87"
 };
 </script>
-<!-- =============================================================== -->
+<!-- ========================================== -->
+
+<!-- decorative sprig, reused -->
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <g id="sprig">
+      <path d="M2 30 Q 30 22 68 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      <path d="M16 26 q -6 -9 -14 -10 q 4 11 14 10z" fill="currentColor"/>
+      <path d="M30 21 q -2 -10 -10 -14 q 1 12 10 14z" fill="currentColor"/>
+      <path d="M45 15 q -1 -10 -8 -15 q 0 12 8 15z" fill="currentColor"/>
+      <path d="M58 10 q 1 -8 -4 -13 q -2 10 4 13z" fill="currentColor"/>
+      <circle cx="24" cy="12" r="1.4" fill="currentColor"/>
+      <circle cx="50" cy="4" r="1.2" fill="currentColor"/>
+    </g>
+  </defs>
+</svg>
 
 <!-- ══════════ PAGE 1 · LANDING ══════════ -->
 <section class="page active" id="p-landing">
-  <div class="inner">
-    <div class="monogram">CH</div>
-    <p class="eyebrow">Bespoke Engraving · Est. Brampton</p>
-    <h1 class="brand">Craft<br>Headed</h1>
-    <p class="studio">Studio</p>
-    <div class="rule"></div>
-    <p class="lead">Hand-crafted engraving &amp; décor for bottles, perfumes and keepsakes —
-      made for weddings, anniversaries and every occasion worth remembering.</p>
-    <div style="margin-top:38px">
-      <button class="btn gold" onclick="go('p-type')">Get Your Customized Gift&nbsp;Experience</button>
+  <div class="inner center-v">
+    <div class="logo">
+      <div class="sprigs">
+        <svg viewBox="0 0 70 34"><use href="#sprig"/></svg>
+        <span class="heart">♥</span>
+        <svg viewBox="0 0 70 34" style="transform:scaleX(-1)"><use href="#sprig"/></svg>
+      </div>
+      <div class="word script">Craft Headed</div>
+      <div class="divider">
+        <span class="ln"></span><span class="hh">♥</span><span class="ln"></span>
+      </div>
+      <div class="byline">by Shivani</div>
+      <div class="tagline">Made with love, for the moments that matter</div>
+    </div>
+    <p class="lead" style="margin-top:24px">
+      Bottles, perfumes and keepsakes, engraved and decorated by hand in our
+      little Brampton studio. One piece, one story at a time.</p>
+    <div style="margin-top:30px">
+      <button class="btn" onclick="go('p-type')">Get Your Customized Gift Experience</button>
     </div>
     <div class="social">
       <a id="ig-link" href="#" target="_blank" rel="noopener">
@@ -214,169 +290,233 @@ const CONFIG = {
 <!-- ══════════ PAGE 2 · CHOOSE PIECE ══════════ -->
 <section class="page" id="p-type">
   <div class="inner">
-    <div class="progress"><span class="dot on"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
-    <p class="eyebrow">Step One</p>
-    <h2>Choose Your Piece</h2>
-    <p class="lead">Select the item you would like us to transform.</p>
-    <div class="choices">
-      <div class="choice" data-type="Bottle" onclick="pickType(this)">
-        <span class="c-icon">⚱</span><span class="c-name">Bottle</span>
-        <span class="c-sub">Wine · Champagne · Whisky</span>
+    <div class="sheet">
+      <div class="progress"><span class="dot on"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+      <p class="eyebrow">Step One</p>
+      <h2>Choose your piece</h2>
+      <p class="lead">Which treasure are we transforming for you?</p>
+      <div class="choices">
+        <div class="choice" data-type="Bottle" onclick="pickType(this)">
+          <span class="c-icon">⚱</span><span class="c-name">Bottle</span>
+          <span class="c-sub">Wine · Champagne · Whisky</span>
+        </div>
+        <div class="choice" data-type="Perfume" onclick="pickType(this)">
+          <span class="c-icon">✧</span><span class="c-name">Perfume</span>
+          <span class="c-sub">Fragrance bottles</span>
+        </div>
+        <div class="choice" data-type="Others" onclick="pickType(this)">
+          <span class="c-icon">❖</span><span class="c-name">Others</span>
+          <span class="c-sub">Glassware · Keepsakes</span>
+        </div>
       </div>
-      <div class="choice" data-type="Perfume" onclick="pickType(this)">
-        <span class="c-icon">✧</span><span class="c-name">Perfume</span>
-        <span class="c-sub">Fragrance flacons</span>
-      </div>
-      <div class="choice" data-type="Others" onclick="pickType(this)">
-        <span class="c-icon">❖</span><span class="c-name">Others</span>
-        <span class="c-sub">Glassware · Keepsakes</span>
-      </div>
+      <p class="note"><span class="star">*</span> A little note: you provide your own bottle or item, and any
+        materials we source for your design are charged at cost. It keeps your piece personal and your price fair.</p>
+      <button class="btn-back" onclick="go('p-landing')">← Back</button>
     </div>
-    <p class="note"><span class="star">✻</span>&nbsp; Clients provide their own bottle or item.
-      Material and labour charges are quoted separately and confirmed before work begins.</p>
-    <button class="btn-back" onclick="go('p-landing')">← Back</button>
   </div>
 </section>
 
 <!-- ══════════ PAGE 3 · DESIGN DETAILS ══════════ -->
 <section class="page" id="p-design">
   <div class="inner">
-    <div class="progress"><span class="dot on"></span><span class="dot on"></span><span class="dot"></span><span class="dot"></span></div>
-    <p class="eyebrow">Step Two</p>
-    <h2>Your Design</h2>
-    <p class="lead" id="design-sub">Tell us what your piece should say.</p>
-    <form onsubmit="return false" style="margin-top:30px">
-      <div class="field" id="f-words">
-        <label>Engraving Text <span class="req">*</span></label>
-        <input type="text" id="in-words" placeholder="e.g. Forever &amp; Always — S + R" autocomplete="off">
-        <div class="hint"><span>Maximum five words</span><span class="count" id="word-count">0 / 5 words</span></div>
-        <p class="error-msg">Please keep the engraving to five words or fewer.</p>
-      </div>
-      <div class="field">
-        <label>Describe the Décor</label>
-        <textarea id="in-decor" placeholder="Florals, gold leaf accents, ribbon, lights, theme colours, occasion…"></textarea>
-      </div>
-      <div class="field">
-        <label>Needed By <span class="req">*</span></label>
-        <input type="date" id="in-date">
-        <div class="hint"><span>The date you'd like your piece ready for</span></div>
-        <p class="error-msg">Please choose a date.</p>
-      </div>
-      <div class="field">
-        <label>Pickup or Delivery <span class="req">*</span></label>
-        <div class="seg">
-          <button type="button" id="seg-pickup" class="on" onclick="setDelivery('Pickup')">Pickup</button>
-          <button type="button" id="seg-delivery" onclick="setDelivery('Delivery')">Delivery</button>
+    <div class="sheet">
+      <div class="progress"><span class="dot on"></span><span class="dot on"></span><span class="dot"></span><span class="dot"></span></div>
+      <p class="eyebrow">Step Two</p>
+      <h2>Your design</h2>
+      <p class="lead" id="design-sub">This is where your story begins. Tell us what your piece should say.</p>
+      <form onsubmit="return false" style="margin-top:26px">
+        <div class="field" id="f-words">
+          <label>Engraving Text <span class="req">*</span></label>
+          <input type="text" id="in-words" placeholder="e.g. Forever &amp; Always, S + R" autocomplete="off">
+          <div class="hint"><span>Up to five words</span><span class="count" id="word-count">0 / 5 words</span></div>
+          <p class="error-msg">Please keep the engraving to five words or fewer.</p>
         </div>
-        <div class="hint" id="pickup-hint"><span>Complimentary pickup — Bramalea &amp; Sandalwood area, Brampton</span></div>
-        <div id="delivery-box" style="display:none; margin-top:12px">
-          <input type="text" id="in-area" placeholder="Your city / area / postal code">
-          <div class="hint"><span>Delivery charges may apply, confirmed with your quote</span></div>
+        <div class="field">
+          <label>Describe the Décor</label>
+          <textarea id="in-decor" placeholder="Florals, gold accents, ribbon, lights, theme colours, the occasion, anything that helps us picture it"></textarea>
+          <div class="hint"><span class="hand" style="font-size:17px; color:var(--gold)">the more you share, the more personal we can make it</span></div>
         </div>
-      </div>
-      <div class="field">
-        <label>Reference Images <span style="color:var(--muted); text-transform:none; letter-spacing:.05em">(optional)</span></label>
-        <div class="upload" onclick="document.getElementById('in-files').click()">
-          <span class="u-icon">✦</span>
-          <p>Add up to 3 images or PDFs<br>(inspiration, sketches, fonts you love — max 4&nbsp;MB each)</p>
+        <div class="field">
+          <label>Needed By <span class="req">*</span></label>
+          <input type="date" id="in-date">
+          <div class="hint"><span>Please allow at least 3 days notice. Detailed or multi-piece designs may need a little longer.</span></div>
+          <p class="error-msg" id="date-err">Please choose a date at least 3 days from today.</p>
         </div>
-        <input type="file" id="in-files" accept="image/*,.pdf" multiple hidden>
-        <div class="filelist" id="filelist"></div>
-      </div>
-      <div style="text-align:center; margin-top:6px">
-        <button class="btn" onclick="validateDesign()">Continue</button><br>
-        <button class="btn-back" onclick="go('p-type')">← Back</button>
-      </div>
-    </form>
+        <div class="field">
+          <label>Pickup or Delivery <span class="req">*</span></label>
+          <div class="seg">
+            <button type="button" id="seg-pickup" class="on" onclick="setDelivery('Pickup')">Pickup</button>
+            <button type="button" id="seg-delivery" onclick="setDelivery('Delivery')">Delivery</button>
+          </div>
+          <div class="hint" id="pickup-hint"><span>Free pickup in the Bramalea &amp; Sandalwood area, Brampton</span></div>
+          <div id="delivery-box" style="display:none; margin-top:12px">
+            <input type="text" id="in-area" placeholder="Your city / area / postal code">
+            <div class="hint"><span>Delivery charges may apply, confirmed with your quote</span></div>
+          </div>
+        </div>
+        <div class="field">
+          <label>Reference Images <span class="opt">(optional)</span></label>
+          <div class="upload" onclick="document.getElementById('in-files').click()">
+            <span class="u-icon">✧</span>
+            <p>Add up to 3 images or PDFs<br>(inspiration, sketches, styles you love; max 4&nbsp;MB each)</p>
+          </div>
+          <input type="file" id="in-files" accept="image/*,.pdf" multiple hidden>
+          <div class="filelist" id="filelist"></div>
+        </div>
+        <div style="text-align:center; margin-top:4px">
+          <button class="btn" onclick="validateDesign()">Continue</button><br>
+          <button class="btn-back" onclick="go('p-type')">← Back</button>
+        </div>
+      </form>
+    </div>
   </div>
 </section>
 
 <!-- ══════════ PAGE 4 · TERMS & CONTACT ══════════ -->
 <section class="page" id="p-terms">
   <div class="inner">
-    <div class="progress"><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span><span class="dot"></span></div>
-    <p class="eyebrow">Step Three</p>
-    <h2>The Fine Details</h2>
-    <div class="terms">
-      <h3>Terms of Commission</h3>
-      <ol>
-        <li>Clients provide their own bottle or item; any materials sourced on your behalf are charged at cost.</li>
-        <li>Labour and artistry are charged separately and included in your final quote.</li>
-        <li>A <b>$25 deposit</b> secures your booking and is <b>adjusted against your final price</b>.</li>
-        <li>Your final price is confirmed by email before any work begins.</li>
-        <li>Complimentary pickup is available in the Bramalea &amp; Sandalwood area, Brampton; delivery charges may apply elsewhere.</li>
-        <li>A copy of your request and these terms will be sent to your email.</li>
-      </ol>
+    <div class="sheet">
+      <div class="progress"><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span><span class="dot"></span></div>
+      <p class="eyebrow">Step Three</p>
+      <h2>The fine details</h2>
+      <p class="lead">The honest, simple stuff, so there are no surprises later.</p>
+      <div class="terms">
+        <h3>Our promise &amp; terms</h3>
+        <ol>
+          <li>You provide your own bottle or item. Any materials we source for you are charged at cost.</li>
+          <li>Labour and artistry are charged separately and included in your final quote.</li>
+          <li>A <b>$25 deposit</b> secures your booking and is <b>fully adjusted against your final price</b>.</li>
+          <li>Your final price is confirmed by email before any work begins. No surprises, ever.</li>
+          <li>Please allow at least 3 days notice; detailed designs may need longer.</li>
+          <li>Free pickup in the Bramalea &amp; Sandalwood area, Brampton. Delivery charges may apply elsewhere.</li>
+          <li>A copy of your request and these terms will be sent to your email.</li>
+        </ol>
+      </div>
+      <form onsubmit="return false">
+        <div class="field" id="f-name">
+          <label>Full Name <span class="req">*</span></label>
+          <input type="text" id="in-name" autocomplete="name" placeholder="Your name">
+          <p class="error-msg">Please enter your name.</p>
+        </div>
+        <div class="field" id="f-email">
+          <label>Email <span class="req">*</span></label>
+          <input type="email" id="in-email" autocomplete="email" placeholder="you@example.com">
+          <div class="hint"><span>We'll send a copy of your request here</span></div>
+          <p class="error-msg">Please enter a valid email address.</p>
+        </div>
+        <div class="field">
+          <label>Phone <span class="opt">(optional)</span></label>
+          <input type="tel" id="in-phone" autocomplete="tel" placeholder="(___) ___-____">
+        </div>
+        <label class="agree">
+          <input type="checkbox" id="in-agree">
+          <span>I agree to the terms above, and I'm happy to receive a copy of my request by email.</span>
+        </label>
+        <p class="error-msg" id="agree-err" style="text-align:left">Please agree to the terms to continue.</p>
+        <div style="text-align:center">
+          <button class="btn" onclick="validateTerms()">Continue to Deposit</button><br>
+          <button class="btn-back" onclick="go('p-design')">← Back</button>
+        </div>
+      </form>
     </div>
-    <form onsubmit="return false">
-      <div class="field" id="f-name">
-        <label>Full Name <span class="req">*</span></label>
-        <input type="text" id="in-name" autocomplete="name" placeholder="Your name">
-        <p class="error-msg">Please enter your name.</p>
-      </div>
-      <div class="field" id="f-email">
-        <label>Email <span class="req">*</span></label>
-        <input type="email" id="in-email" autocomplete="email" placeholder="you@example.com">
-        <div class="hint"><span>We'll send a copy of your request here</span></div>
-        <p class="error-msg">Please enter a valid email address.</p>
-      </div>
-      <div class="field">
-        <label>Phone <span style="color:var(--muted); text-transform:none; letter-spacing:.05em">(optional)</span></label>
-        <input type="tel" id="in-phone" autocomplete="tel" placeholder="(___) ___-____">
-      </div>
-      <label class="agree" id="f-agree">
-        <input type="checkbox" id="in-agree">
-        <span>I agree to the terms of commission above, and consent to receiving a copy of my request by email.</span>
-      </label>
-      <p class="error-msg" id="agree-err" style="text-align:left; margin:-14px 0 18px">Please agree to the terms to continue.</p>
-      <div style="text-align:center">
-        <button class="btn" onclick="validateTerms()">Continue to Deposit</button><br>
-        <button class="btn-back" onclick="go('p-design')">← Back</button>
-      </div>
-    </form>
   </div>
 </section>
 
 <!-- ══════════ PAGE 5 · DEPOSIT ══════════ -->
 <section class="page" id="p-deposit">
   <div class="inner">
-    <div class="progress"><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span></div>
-    <p class="eyebrow">Final Step</p>
-    <h2>Reserve Your Booking</h2>
-    <p class="price-note" style="margin-top:20px">Booking Deposit</p>
-    <p class="price"><sup>$</sup>25</p>
-    <p class="lead" style="margin-top:6px">Fully adjusted against your final price.</p>
-    <div class="summary" id="summary"></div>
-    <div id="pay-area">
-      <button class="btn solid" id="btn-pay" onclick="payWithCard()">Pay $25 Deposit · Card</button>
-      <div class="spinner" id="spin-pay"></div>
-      <div class="alt-pay">
-        <button onclick="document.getElementById('staff-box').classList.toggle('open')">Paying by Interac or cash? ▾</button>
-        <div class="staff-box" id="staff-box">
-          <p class="lead" style="font-size:13px">Please ask a Craft Headed team member to enter the studio code.</p>
-          <div class="pinrow">
-            <input type="text" id="in-staffcode" placeholder="•••••" autocomplete="off" autocapitalize="off">
-            <button class="btn gold" onclick="payWithStaffCode()">Confirm</button>
+    <div class="sheet">
+      <div class="progress"><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span></div>
+      <p class="eyebrow">Final Step</p>
+      <h2>Reserve your booking</h2>
+      <p class="price-note">Booking Deposit</p>
+      <p class="price">$25</p>
+      <p class="lead">Fully adjusted against your final price.</p>
+      <div class="summary" id="summary"></div>
+      <p class="eyebrow" style="color:var(--ink); margin-bottom:12px">How would you like to pay?</p>
+      <div class="paytabs">
+
+        <div class="paytab" id="tab-card" onclick="openTab('card')">
+          <div class="pt-head"><span class="pt-ic">✧</span>
+            <div><div class="pt-name">Card, online
+              <span class="stripe-badge">Powered by <b>stripe</b></span></div>
+            <div class="pt-sub">Secure checkout, Apple Pay and Google Pay too</div></div>
           </div>
-          <p class="error-msg" id="staff-err" style="text-align:center; margin-top:10px">That code isn't right — please try again.</p>
+          <div class="pt-body" onclick="event.stopPropagation()">
+            <p class="pt-steps" style="text-align:center">Your email is pre-filled at checkout. Your confirmation
+              email arrives right after payment.</p>
+            <div class="spinner" id="spin-pay"></div>
+            <div id="buy-button-slot"></div>
+          </div>
         </div>
+
+        <div class="paytab" id="tab-etransfer" onclick="openTab('etransfer')">
+          <div class="pt-head"><span class="pt-ic">✉</span>
+            <div><div class="pt-name">Interac e-Transfer</div>
+            <div class="pt-sub">Send $25 from your banking app, no fees</div></div>
+          </div>
+          <div class="pt-body" onclick="event.stopPropagation()">
+            <div class="pt-steps">
+              1. Open your banking app and send an Interac e-Transfer of <b>$25</b> to:
+            </div>
+            <div class="etr-email" id="etr-email"></div>
+            <div class="pt-steps">
+              2. Put your <b>name</b> in the transfer message.<br>
+              3. A Craft Headed team member confirms it with the studio code below.
+            </div>
+            <div class="codewrap">
+              <span class="cw-label">Studio code</span>
+              <div class="pinrow">
+                <input type="password" id="in-code-etr" placeholder="••••••" autocomplete="off">
+                <button class="btn ghost" onclick="payWithEtransfer()">Confirm</button>
+              </div>
+              <p class="error-msg" id="err-etr" style="text-align:center; margin-top:10px">That code isn't right. Please try again.</p>
+              <div class="spinner" id="spin-etr"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="paytab" id="tab-person" onclick="openTab('person')">
+          <div class="pt-head"><span class="pt-ic">❖</span>
+            <div><div class="pt-name">Tap or cash, in person</div>
+            <div class="pt-sub">Tap your card or Apple Pay on our phone, or pay cash</div></div>
+          </div>
+          <div class="pt-body" onclick="event.stopPropagation()">
+            <p class="lead" style="font-size:13.5px">Tap your card or phone on our reader, or hand us cash.
+              A Craft Headed team member confirms your booking with the studio code.</p>
+            <div class="codewrap">
+              <span class="cw-label">Studio code</span>
+              <div class="pinrow">
+                <input type="password" id="in-code-person" placeholder="••••••" autocomplete="off">
+                <button class="btn ghost" onclick="payInPerson()">Confirm</button>
+              </div>
+              <p class="error-msg" id="err-person" style="text-align:center; margin-top:10px">That code isn't right. Please try again.</p>
+              <div class="spinner" id="spin-person"></div>
+            </div>
+          </div>
+        </div>
+
       </div>
+      <button class="btn-back" onclick="go('p-terms')">← Back</button>
     </div>
-    <button class="btn-back" onclick="go('p-terms')">← Back</button>
   </div>
 </section>
 
 <!-- ══════════ PAGE 6 · THANK YOU ══════════ -->
 <section class="page" id="p-thanks">
-  <div class="inner">
-    <div class="check">✓</div>
-    <p class="eyebrow">Request Received</p>
-    <h2>Thank You</h2>
-    <div class="rule"></div>
-    <p class="lead">Your request has been received and a copy is on its way to your inbox.
-      We will be in touch shortly with your <b>final price</b> and any additional details.</p>
-    <p class="lead" style="margin-top:18px; font-size:13.5px" id="thanks-note"></p>
-    <div class="social" style="margin-top:38px">
+  <div class="inner center-v">
+    <div class="thanks-heart">♥</div>
+    <h2 class="script" style="font-size:clamp(36px,9vw,50px)">Thank you!</h2>
+    <p class="lead">Your request has been received and a copy is on its way
+      to your inbox. We'll be in touch soon with your final price and the little details.</p>
+    <p class="lead" style="margin-top:14px; font-size:14px; font-weight:600; color:var(--gold)" id="thanks-note"></p>
+    <div class="personal">
+      <p class="handnote">"Thank you for trusting us with your special moment.
+        I read every single request myself, and your piece will be made by hand,
+        with the same care I'd put into a gift for my own family."</p>
+      <p class="sig">Shivani</p>
+    </div>
+    <div class="social" style="margin-top:32px">
       <a href="#" target="_blank" rel="noopener" onclick="this.href=CONFIG.INSTAGRAM">
         <svg viewBox="0 0 24 24"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.4" cy="6.6" r="1" fill="currentColor" stroke="none"/></svg>
         Follow @craft.headed
@@ -390,18 +530,30 @@ const CONFIG = {
 
 <script>
 /* ═══════════ state ═══════════ */
-const order = { type:'', words:'', decor:'', date:'', fulfilment:'Pickup', area:'', files:[],
-                name:'', email:'', phone:'', payment:'' };
+const order = { orderId:'', type:'', words:'', decor:'', date:'', fulfilment:'Pickup', area:'',
+                files:[], name:'', email:'', phone:'', payment:'', emailCustomer:false };
 let submitted = false;
 
 document.getElementById('ig-link').href = CONFIG.INSTAGRAM;
-document.getElementById('in-date').min = new Date().toISOString().split('T')[0];
+document.getElementById('etr-email').textContent = CONFIG.ETRANSFER_EMAIL;
 
-/* if returning from Stripe (payment link redirect ?paid=1) show thank-you */
+/* minimum date = today + notice days */
+const minDate = new Date();
+minDate.setDate(minDate.getDate() + CONFIG.MIN_DAYS_NOTICE);
+document.getElementById('in-date').min = minDate.toISOString().split('T')[0];
+
+/* returning from Stripe (?paid=1): confirm payment on the backend,
+   which triggers the customer's confirmation email */
 if (new URLSearchParams(location.search).get('paid') === '1') {
   document.querySelector('.page.active').classList.remove('active');
   document.getElementById('p-thanks').classList.add('active');
-  document.getElementById('thanks-note').textContent = 'Your $25 deposit has been received. ✦';
+  document.getElementById('thanks-note').textContent = 'Your $25 deposit has been received.';
+  const pendingId = localStorage.getItem('ch_pending_order');
+  if (pendingId){
+    localStorage.removeItem('ch_pending_order');
+    fetch(CONFIG.SCRIPT_URL, {method:'POST',
+      body:JSON.stringify({action:'paid', orderId:pendingId})}).catch(console.error);
+  }
 }
 
 function go(id){
@@ -421,8 +573,8 @@ function pickType(el){
   el.classList.add('selected');
   order.type = el.dataset.type;
   document.getElementById('design-sub').textContent =
-    order.type==='Others' ? 'Tell us about your piece and what it should say.'
-                          : `Tell us what your ${order.type.toLowerCase()} should say.`;
+    order.type==='Others' ? 'This is where your story begins. Tell us about your piece and what it should say.'
+                          : `This is where your story begins. Tell us what your ${order.type.toLowerCase()} should say.`;
   setTimeout(()=>go('p-design'), 250);
 }
 
@@ -472,15 +624,16 @@ function validateDesign(){
   fw.classList.toggle('invalid', n===0 || n>5);
   if (n===0 || n>5) ok = false;
   const dateEl = document.getElementById('in-date');
-  dateEl.closest('.field').classList.toggle('invalid', !dateEl.value);
-  if (!dateEl.value) ok = false;
+  const dateOk = dateEl.value && dateEl.value >= dateEl.min;
+  dateEl.closest('.field').classList.toggle('invalid', !dateOk);
+  if (!dateOk) ok = false;
   if (!ok) return;
   order.words = wordsIn.value.trim();
   order.decor = document.getElementById('in-decor').value.trim();
   order.date  = dateEl.value;
   order.area  = order.fulfilment==='Delivery'
-      ? (document.getElementById('in-area').value.trim() || '—')
-      : 'Pickup — Bramalea & Sandalwood, Brampton';
+      ? (document.getElementById('in-area').value.trim() || 'Not given')
+      : 'Pickup: Bramalea & Sandalwood, Brampton';
   go('p-terms');
 }
 
@@ -505,7 +658,7 @@ function validateTerms(){
 }
 function renderSummary(){
   const rows = [
-    ['Piece', order.type], ['Engraving', '“'+order.words+'”'],
+    ['Piece', order.type], ['Engraving', '"'+order.words+'"'],
     ['Needed by', new Date(order.date+'T12:00').toLocaleDateString('en-CA',{month:'long',day:'numeric',year:'numeric'})],
     [order.fulfilment, order.area],
     ['Name', order.name], ['Email', order.email]
@@ -515,14 +668,21 @@ function renderSummary(){
 }
 
 /* ═══════════ step 4 : payment ═══════════ */
+function openTab(which){
+  ['card','etransfer','person'].forEach(t=>
+    document.getElementById('tab-'+t).classList.toggle('open', t===which));
+  if (which==='card') saveForCard();
+}
+
+function makeOrderId(){
+  return 'CH-' + Date.now().toString(36).toUpperCase() +
+         Math.random().toString(36).slice(2,5).toUpperCase();
+}
+
 async function submitOrder(){
   if (submitted) return true;
+  if (!order.orderId) order.orderId = makeOrderId();
   const payload = {...order, submittedAt:new Date().toISOString()};
-  if (CONFIG.SCRIPT_URL.startsWith('PASTE')){
-    console.warn('CONFIG.SCRIPT_URL not set — running in demo mode, nothing was saved.');
-    toast('Demo mode — backend not connected yet.');
-    submitted = true; return true;
-  }
   try{
     const res = await fetch(CONFIG.SCRIPT_URL, {method:'POST', body:JSON.stringify(payload)});
     const j = await res.json();
@@ -530,38 +690,79 @@ async function submitOrder(){
     submitted = true; return true;
   }catch(err){
     console.error(err);
-    toast('Something went wrong sending your request — please try again.');
+    toast('Something went wrong sending your request. Please try again.');
     return false;
   }
 }
 
-async function payWithCard(){
-  order.payment = 'Card — Stripe ($25 deposit)';
-  const btn = document.getElementById('btn-pay');
-  btn.disabled = true; document.getElementById('spin-pay').style.display='block';
+/* card: save the request (email waits for payment), then show the
+   Stripe button pre-filled with the customer's email + order reference */
+async function saveForCard(){
+  if (submitted){ renderBuyButton(); return; }
+  order.payment = 'Card via Stripe ($25, awaiting payment)';
+  order.emailCustomer = false;
+  document.getElementById('spin-pay').style.display='block';
   const ok = await submitOrder();
-  btn.disabled = false; document.getElementById('spin-pay').style.display='none';
+  document.getElementById('spin-pay').style.display='none';
   if (!ok) return;
-  if (CONFIG.STRIPE_LINK.startsWith('PASTE')){
-    toast('Stripe link not set up yet — showing thank-you page (demo).');
-    go('p-thanks'); return;
+  localStorage.setItem('ch_pending_order', order.orderId);
+  renderBuyButton();
+}
+function renderBuyButton(){
+  const slot = document.getElementById('buy-button-slot');
+  if (slot.childElementCount) return;
+  if (!CONFIG.PAYMENT_LINK.startsWith('PASTE')){
+    const a = document.createElement('a');
+    a.className = 'btn';
+    a.textContent = 'Pay $25 Deposit';
+    a.href = CONFIG.PAYMENT_LINK +
+      '?prefilled_email=' + encodeURIComponent(order.email) +
+      '&client_reference_id=' + encodeURIComponent(order.orderId);
+    slot.appendChild(a);
+    return;
   }
-  location.href = CONFIG.STRIPE_LINK; // Stripe redirects back to ?paid=1
+  const btn = document.createElement('stripe-buy-button');
+  btn.setAttribute('buy-button-id', CONFIG.BUY_BUTTON_ID);
+  btn.setAttribute('publishable-key', CONFIG.STRIPE_PK);
+  btn.setAttribute('customer-email', order.email);
+  btn.setAttribute('client-reference-id', order.orderId);
+  slot.appendChild(btn);
 }
 
-async function payWithStaffCode(){
-  const code = document.getElementById('in-staffcode').value.trim();
+async function verifyCode(inputId, errId){
+  const code = document.getElementById(inputId).value.trim();
   const hash = await sha256(code);
-  const errEl = document.getElementById('staff-err');
-  if (hash !== CONFIG.STAFF_CODE_HASH){ errEl.style.display='block'; return; }
-  errEl.style.display='none';
-  order.payment = 'Interac / Cash — verified in person (staff code)';
+  const good = hash === CONFIG.STAFF_CODE_HASH;
+  document.getElementById(errId).style.display = good ? 'none' : 'block';
+  return good;
+}
+
+async function payWithEtransfer(){
+  if (!await verifyCode('in-code-etr','err-etr')) return;
+  order.payment = 'Interac e-Transfer ($25, staff verified)';
+  order.emailCustomer = true;
+  document.getElementById('spin-etr').style.display='block';
   const ok = await submitOrder();
+  document.getElementById('spin-etr').style.display='none';
   if (!ok) return;
   document.getElementById('thanks-note').textContent =
-    'Deposit to be collected by Interac e-Transfer or cash. ✦';
+    'Your booking is confirmed. Thank you for the e-Transfer.';
   go('p-thanks');
 }
+
+async function payInPerson(){
+  if (!await verifyCode('in-code-person','err-person')) return;
+  order.payment = 'In person, tap or cash (staff verified)';
+  order.emailCustomer = true;
+  document.getElementById('spin-person').style.display='block';
+  const ok = await submitOrder();
+  document.getElementById('spin-person').style.display='none';
+  if (!ok) return;
+  document.getElementById('thanks-note').textContent =
+    'Deposit collected in person. You\'re all booked in.';
+  go('p-thanks');
+}
+
 async function sha256(str){
   const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
   return [...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,'0')).join('');
