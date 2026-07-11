@@ -224,9 +224,8 @@
 <script>
 const CONFIG = {
   SCRIPT_URL:      "https://script.google.com/macros/s/AKfycbyBh0Ij_BZ_q6FprVQqx1dGt-2NjrfDG14T2Kmi4gueFDLKdLERHdsFGrsiXh007tQ1kA/exec",
-  // LIVE payment: paste your live Payment Link URL here (https://buy.stripe.com/...).
-  // When set, it is used instead of the buy button below.
-  PAYMENT_LINK:    "PASTE_YOUR_LIVE_PAYMENT_LINK_HERE",
+  // LIVE payment link (confirmation page redirects to ?paid=1)
+  PAYMENT_LINK:    "https://buy.stripe.com/5kQ4gybxn5QUa6fcZ45Vu01",
   // Fallback: test-mode buy button (used only while PAYMENT_LINK is not set)
   BUY_BUTTON_ID:   "buy_btn_1TrnLOCdHEHDeSuLFal2IEZ3",
   STRIPE_PK:       "pk_test_51TrnEmCdHEHDeSuLBUPoCUmwz8aFKEnTTHs11RYxqIlIdk8OWX93AwboJkvbSFnFJSp4PFdoONnVEBhUDzJe8zky00niyLl06f",
@@ -542,17 +541,22 @@ const minDate = new Date();
 minDate.setDate(minDate.getDate() + CONFIG.MIN_DAYS_NOTICE);
 document.getElementById('in-date').min = minDate.toISOString().split('T')[0];
 
-/* returning from Stripe (?paid=1): confirm payment on the backend,
-   which triggers the customer's confirmation email */
+/* returning from Stripe (?paid=1): NOW the order is submitted for real,
+   which saves it to the sheet and emails the customer their copy.
+   If they never pay, nothing was recorded. */
 if (new URLSearchParams(location.search).get('paid') === '1') {
   document.querySelector('.page.active').classList.remove('active');
   document.getElementById('p-thanks').classList.add('active');
   document.getElementById('thanks-note').textContent = 'Your $25 deposit has been received.';
-  const pendingId = localStorage.getItem('ch_pending_order');
-  if (pendingId){
-    localStorage.removeItem('ch_pending_order');
-    fetch(CONFIG.SCRIPT_URL, {method:'POST',
-      body:JSON.stringify({action:'paid', orderId:pendingId})}).catch(console.error);
+  const raw = localStorage.getItem('ch_pending_payload');
+  if (raw){
+    fetch(CONFIG.SCRIPT_URL, {method:'POST', body:raw})
+      .then(r=>r.json())
+      .then(j=>{ if (j.status==='ok') localStorage.removeItem('ch_pending_payload'); })
+      .catch(err=>{
+        console.error(err);
+        toast('Payment received. If no email arrives, message us on Instagram @craft.headed');
+      });
   }
 }
 
@@ -695,17 +699,23 @@ async function submitOrder(){
   }
 }
 
-/* card: save the request (email waits for payment), then show the
-   Stripe button pre-filled with the customer's email + order reference */
-async function saveForCard(){
-  if (submitted){ renderBuyButton(); return; }
-  order.payment = 'Card via Stripe ($25, awaiting payment)';
-  order.emailCustomer = false;
-  document.getElementById('spin-pay').style.display='block';
-  const ok = await submitOrder();
-  document.getElementById('spin-pay').style.display='none';
-  if (!ok) return;
-  localStorage.setItem('ch_pending_order', order.orderId);
+/* card: nothing is recorded yet. The full order is parked in the browser
+   and only submitted when Stripe redirects back after successful payment. */
+function saveForCard(){
+  if (!order.orderId) order.orderId = makeOrderId();
+  order.payment = 'Card via Stripe, PAID $25';
+  order.emailCustomer = true;
+  const payload = JSON.stringify({...order, submittedAt:new Date().toISOString()});
+  try{
+    localStorage.setItem('ch_pending_payload', payload);
+  }catch(e){
+    // reference images too large for browser storage; carry the order through without them
+    try{
+      localStorage.setItem('ch_pending_payload',
+        JSON.stringify({...order, files:[], decor:(order.decor||'') + ' [reference images too large, ask by email]', submittedAt:new Date().toISOString()}));
+      toast('Your reference images are large; we may ask you to email them after booking.');
+    }catch(e2){ console.error(e2); }
+  }
   renderBuyButton();
 }
 function renderBuyButton(){
