@@ -27,6 +27,13 @@
     --hand:'Caveat', cursive;
     --sans:'Karla', 'Segoe UI', sans-serif;
   }
+  /* Srishti Atelier (resin art) theme: white background, gold tones */
+  body.resin{
+    --bg:#FFFFFF; --bg-2:#F8F3E6; --paper:#FFFFFF; --card:#FFFFFF;
+    --ink:#8A6D3B; --muted:#B39B6E; --gold:#C7A252; --gold-soft:#DcC48A;
+    --line:#EAE0C9;
+    background-image:radial-gradient(ellipse 85% 45% at 50% -8%, #FBF7EC 0%, transparent 65%);
+  }
   *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   html{-webkit-text-size-adjust:100%}
   body{
@@ -110,6 +117,11 @@
   .note{font-size:13px; color:var(--muted); margin-top:20px; line-height:1.7; text-align:left;
     background:var(--bg-2); border-radius:6px; padding:14px 16px}
   .note .star{color:var(--gold); font-weight:600}
+  .or-row{display:flex; align-items:center; gap:14px; margin:18px 0 14px; color:var(--muted)}
+  .or-row .ln{flex:1; height:1px; background:var(--line)}
+  .or-row span{font-family:var(--hand); font-size:18px; font-weight:600}
+  .choice.resin{display:block; width:100%; background:var(--bg-2)}
+  .choice.resin .c-sub{font-style:italic}
 
   /* ---------- form ---------- */
   form{text-align:left}
@@ -226,6 +238,8 @@ const CONFIG = {
   // (1) PASTE HERE: your new Apps Script web app URL (ends in /exec)
   SCRIPT_URL:      "https://script.google.com/macros/s/AKfycbxzsZ-meuoEEpquE7dI3_eW2c0mVITXtuBp0tp3Hw0IsriuBZPpl0Y5zjaX_IJo44ln/exec",
   PAYMENT_LINK:    "https://buy.stripe.com/8x2eVebTqgHi17D2Dz9fW00",
+  // Srishti Atelier resin art deposit link
+  PAYMENT_LINK_RESIN: "https://buy.stripe.com/3cI14ocXu76IdUpfql9fW01",
   // Fallback buy button, not used when PAYMENT_LINK is set. Leave as is.
   BUY_BUTTON_ID:   "",
   STRIPE_PK:       "",
@@ -308,6 +322,11 @@ const CONFIG = {
           <span class="c-sub">Glassware · Keepsakes</span>
         </div>
       </div>
+      <div class="or-row"><span class="ln"></span><span>or</span><span class="ln"></span></div>
+      <div class="choice resin" onclick="pickResin(this)">
+        <span class="c-icon">❁</span><span class="c-name">Resin Art</span>
+        <span class="c-sub">Srishti Atelier · by Srishti</span>
+      </div>
       <p class="note"><span class="star">*</span> A little note: you provide your own bottle or item, and any
         materials we source for your design are charged at cost. It keeps your piece personal and your price fair.</p>
       <button class="btn-back" onclick="go('p-landing')">← Back</button>
@@ -330,10 +349,11 @@ const CONFIG = {
           <div class="hint"><span>Up to five words</span><span class="count" id="word-count">0 / 5 words</span></div>
           <p class="error-msg">Please keep the engraving to five words or fewer.</p>
         </div>
-        <div class="field">
-          <label>Describe the Décor</label>
+        <div class="field" id="f-decor">
+          <label id="decor-label">Describe the Décor</label>
           <textarea id="in-decor" placeholder="Florals, gold accents, ribbon, lights, theme colours, the occasion, anything that helps us picture it"></textarea>
           <div class="hint"><span class="hand" style="font-size:17px; color:var(--gold)">the more you share, the more personal we can make it</span></div>
+          <p class="error-msg">Please describe what you'd like made.</p>
         </div>
         <div class="field">
           <label>Needed By <span class="req">*</span></label>
@@ -382,7 +402,7 @@ const CONFIG = {
       <div class="terms">
         <h3>Our promise &amp; terms</h3>
         <ol>
-          <li>You provide your own bottle or item. Any materials we source for you are charged at cost.</li>
+          <li id="term-materials">You provide your own bottle or item. Any materials we source for you are charged at cost.</li>
           <li>Labour and artistry are charged separately and included in your final quote.</li>
           <li>A <b>$25 deposit</b> secures your booking and is <b>fully adjusted against your final price</b>.</li>
           <li>Your final price is confirmed by email before any work begins. No surprises, ever.</li>
@@ -509,11 +529,16 @@ const CONFIG = {
     <p class="lead">Your request has been received and a copy is on its way
       to your inbox. We'll be in touch soon with your final price and the little details.</p>
     <p class="lead" style="margin-top:14px; font-size:14px; font-weight:600; color:var(--gold)" id="thanks-note"></p>
-    <div class="personal">
+    <div class="personal" id="personal-ch">
       <p class="handnote">"Thank you for trusting us with your special moment.
         I read every single request myself, and your piece will be made by hand,
         with the same care I'd put into a gift for my own family."</p>
       <p class="sig">Shivani</p>
+    </div>
+    <div class="personal" id="personal-sa" style="display:none">
+      <p class="handnote">"Every resin piece is poured and finished by hand, one layer at a time.
+        I'll email you soon with your price and the details."</p>
+      <p class="sig">Srishti · Srishti Atelier</p>
     </div>
     <div class="social" style="margin-top:32px">
       <a href="#" target="_blank" rel="noopener" onclick="this.href=CONFIG.INSTAGRAM">
@@ -529,8 +554,9 @@ const CONFIG = {
 
 <script>
 /* ═══════════ state ═══════════ */
-const order = { orderId:'', type:'', words:'', decor:'', date:'', fulfilment:'Pickup', area:'',
-                files:[], name:'', email:'', phone:'', payment:'', emailCustomer:false };
+const order = { orderId:'', brand:'Craft Headed', type:'', words:'', decor:'', date:'', fulfilment:'Pickup',
+                area:'', files:[], name:'', email:'', phone:'', payment:'', emailCustomer:false };
+function isResin(){ return order.brand === 'Srishti Atelier'; }
 let submitted = false;
 
 document.getElementById('ig-link').href = CONFIG.INSTAGRAM;
@@ -550,6 +576,14 @@ if (new URLSearchParams(location.search).get('paid') === '1') {
   document.getElementById('thanks-note').textContent = 'Your $25 deposit has been received.';
   const raw = localStorage.getItem('ch_pending_payload');
   if (raw){
+    try{
+      const p = JSON.parse(raw);
+      if (p.brand === 'Srishti Atelier'){
+        document.getElementById('personal-ch').style.display = 'none';
+        document.getElementById('personal-sa').style.display = 'block';
+        document.body.classList.add('resin');
+      }
+    }catch(e){}
     fetch(CONFIG.SCRIPT_URL, {method:'POST', body:raw})
       .then(r=>r.json())
       .then(j=>{ if (j.status==='ok') localStorage.removeItem('ch_pending_payload'); })
@@ -575,11 +609,34 @@ function toast(msg){
 function pickType(el){
   document.querySelectorAll('.choice').forEach(c=>c.classList.remove('selected'));
   el.classList.add('selected');
+  order.brand = 'Craft Headed';
   order.type = el.dataset.type;
+  document.body.classList.remove('resin');
+  applyDesignForm();
   document.getElementById('design-sub').textContent =
     order.type==='Others' ? 'This is where your story begins. Tell us about your piece and what it should say.'
                           : `This is where your story begins. Tell us what your ${order.type.toLowerCase()} should say.`;
   setTimeout(()=>go('p-design'), 250);
+}
+function pickResin(el){
+  document.querySelectorAll('.choice').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected');
+  order.brand = 'Srishti Atelier';
+  order.type = 'Resin Art';
+  document.body.classList.add('resin');
+  applyDesignForm();
+  document.getElementById('design-sub').textContent =
+    'Resin art with Srishti Atelier. Tell Srishti what you\'re dreaming of.';
+  setTimeout(()=>go('p-design'), 250);
+}
+function applyDesignForm(){
+  const r = isResin();
+  document.getElementById('f-words').style.display = r ? 'none' : 'block';
+  document.getElementById('decor-label').innerHTML = r
+    ? 'Art Requirement <span class="req">*</span>' : 'Describe the Décor';
+  document.getElementById('in-decor').placeholder = r
+    ? 'Colours, size, theme, the occasion, what the piece is for, anything that helps Srishti picture it'
+    : 'Florals, gold accents, ribbon, lights, theme colours, the occasion, anything that helps us picture it';
 }
 
 /* ═══════════ step 2 : design ═══════════ */
@@ -623,21 +680,30 @@ function renderFiles(){
 
 function validateDesign(){
   let ok = true;
-  const fw = document.getElementById('f-words');
-  const n = countWords(wordsIn.value);
-  fw.classList.toggle('invalid', n===0 || n>5);
-  if (n===0 || n>5) ok = false;
+  const decorVal = document.getElementById('in-decor').value.trim();
+  if (isResin()){
+    document.getElementById('f-decor').classList.toggle('invalid', !decorVal);
+    if (!decorVal) ok = false;
+  } else {
+    const fw = document.getElementById('f-words');
+    const n = countWords(wordsIn.value);
+    fw.classList.toggle('invalid', n===0 || n>5);
+    if (n===0 || n>5) ok = false;
+  }
   const dateEl = document.getElementById('in-date');
   const dateOk = dateEl.value && dateEl.value >= dateEl.min;
   dateEl.closest('.field').classList.toggle('invalid', !dateOk);
   if (!dateOk) ok = false;
   if (!ok) return;
-  order.words = wordsIn.value.trim();
-  order.decor = document.getElementById('in-decor').value.trim();
+  order.words = isResin() ? '' : wordsIn.value.trim();
+  order.decor = decorVal;
   order.date  = dateEl.value;
   order.area  = order.fulfilment==='Delivery'
       ? (document.getElementById('in-area').value.trim() || 'Not given')
       : 'Pickup: Bramalea & Sandalwood, Brampton';
+  document.getElementById('term-materials').textContent = isResin()
+    ? 'All resin art materials are included in your final quoted price.'
+    : 'You provide your own bottle or item. Any materials we source for you are charged at cost.';
   go('p-terms');
 }
 
@@ -661,12 +727,18 @@ function validateTerms(){
   go('p-deposit');
 }
 function renderSummary(){
-  const rows = [
-    ['Piece', order.type], ['Engraving', '"'+order.words+'"'],
+  const rows = [['Piece', isResin() ? 'Resin Art · Srishti Atelier' : order.type]];
+  if (isResin()){
+    const req = order.decor.length > 70 ? order.decor.slice(0,70)+'…' : order.decor;
+    rows.push(['Requirement', req]);
+  } else {
+    rows.push(['Engraving', '"'+order.words+'"']);
+  }
+  rows.push(
     ['Needed by', new Date(order.date+'T12:00').toLocaleDateString('en-CA',{month:'long',day:'numeric',year:'numeric'})],
     [order.fulfilment, order.area],
     ['Name', order.name], ['Email', order.email]
-  ];
+  );
   document.getElementById('summary').innerHTML =
     rows.map(([k,v])=>`<div class="row"><span class="k">${k}</span><span class="v">${v}</span></div>`).join('');
 }
@@ -720,23 +792,20 @@ function saveForCard(){
 }
 function renderBuyButton(){
   const slot = document.getElementById('buy-button-slot');
-  if (slot.childElementCount) return;
-  if (!CONFIG.PAYMENT_LINK.startsWith('PASTE')){
-    const a = document.createElement('a');
-    a.className = 'btn';
-    a.textContent = 'Pay $25 Deposit';
-    a.href = CONFIG.PAYMENT_LINK +
-      '?prefilled_email=' + encodeURIComponent(order.email) +
-      '&client_reference_id=' + encodeURIComponent(order.orderId);
-    slot.appendChild(a);
-    return;
-  }
-  const btn = document.createElement('stripe-buy-button');
-  btn.setAttribute('buy-button-id', CONFIG.BUY_BUTTON_ID);
-  btn.setAttribute('publishable-key', CONFIG.STRIPE_PK);
-  btn.setAttribute('customer-email', order.email);
-  btn.setAttribute('client-reference-id', order.orderId);
-  slot.appendChild(btn);
+  slot.innerHTML = '';
+  const link = isResin() ? CONFIG.PAYMENT_LINK_RESIN : CONFIG.PAYMENT_LINK;
+  const a = document.createElement('a');
+  a.className = 'btn';
+  a.textContent = 'Pay $25 Deposit';
+  a.href = link +
+    '?prefilled_email=' + encodeURIComponent(order.email) +
+    '&client_reference_id=' + encodeURIComponent(order.orderId);
+  slot.appendChild(a);
+}
+function showThanksBrand(resin){
+  document.getElementById('personal-ch').style.display = resin ? 'none' : 'block';
+  document.getElementById('personal-sa').style.display = resin ? 'block' : 'none';
+  document.body.classList.toggle('resin', resin);
 }
 
 async function verifyCode(inputId, errId){
@@ -757,6 +826,7 @@ async function payWithEtransfer(){
   if (!ok) return;
   document.getElementById('thanks-note').textContent =
     'Your booking is confirmed. Thank you for the e-Transfer.';
+  showThanksBrand(isResin());
   go('p-thanks');
 }
 
@@ -770,6 +840,7 @@ async function payInPerson(){
   if (!ok) return;
   document.getElementById('thanks-note').textContent =
     'Deposit collected in person. You\'re all booked in.';
+  showThanksBrand(isResin());
   go('p-thanks');
 }
 
